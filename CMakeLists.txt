@@ -6,7 +6,7 @@ cmake_minimum_required (VERSION 2.8)
 project (NUCLEO_BLINK)
 
 # define some more paths to projects we depend on
-set (MBED_SRC_PATH     ${NUCLEO_BLINK_SOURCE_DIR}/../mbed-src/libraries/mbed)
+set (MBED_SRC_PATH     ${NUCLEO_BLINK_SOURCE_DIR}/./mbed/libraries/mbed)
 # set (BLE_API_SRC_PATH  ${NUCLEO_BLINK_SOURCE_DIR}/../../BLE_API)
 # set (NRF51822_SRC_PATH ${NUCLEO_BLINK_SOURCE_DIR}/../../nRF51822)
 
@@ -68,11 +68,11 @@ include_directories(
     ${MBED_SRC_PATH}/targets/cmsis
     ${MBED_SRC_PATH}/targets/cmsis/TARGET_STM
     ${MBED_SRC_PATH}/targets/cmsis/TARGET_STM/TARGET_STM32F4
-    ${MBED_SRC_PATH}/targets/cmsis/TARGET_STM/TARGET_STM32F4/TARGET_NUCLEO_F411RE
+    ${MBED_SRC_PATH}/targets/cmsis/TARGET_STM/TARGET_STM32F4/TARGET_NUCLEO_F446RE
     ${MBED_SRC_PATH}/targets/hal
     ${MBED_SRC_PATH}/targets/hal/TARGET_STM
     ${MBED_SRC_PATH}/targets/hal/TARGET_STM/TARGET_STM32F4
-    ${MBED_SRC_PATH}/targets/hal/TARGET_STM/TARGET_STM32F4/TARGET_NUCLEO_F411RE
+    ${MBED_SRC_PATH}/targets/hal/TARGET_STM/TARGET_STM32F4/TARGET_NUCLEO_F446RE
     ${MBED_SRC_PATH}/targets/cmsis/TARGET_STM/TARGET_STM32F4/DTOOLCHAIN_GCC_ARM
 )
 
@@ -81,7 +81,7 @@ add_definitions(
     -O2
     -DTARGET_STM
     -DTARGET_STM32F4
-    -DTARGET_NUCLEO_F411RE
+    -DTARGET_NUCLEO_F446RE
     -D__CORTEX_M4
     -DARM_MATH_CM4
     -D__MBED__=1
@@ -121,7 +121,7 @@ set(CMAKE_ASM_FLAGS
     "${COMMON_COMPILE_FLAGS} -x assembler-with-cpp")
 
 SET(CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS
-  -T${MBED_SRC_PATH}/targets/cmsis/TARGET_STM/TARGET_STM32F4/TARGET_NUCLEO_F411RE/TOOLCHAIN_GCC_ARM/STM32F411XE.ld)
+  -T${MBED_SRC_PATH}/targets/cmsis/TARGET_STM/TARGET_STM32F4/TARGET_NUCLEO_F446RE/TOOLCHAIN_GCC_ARM/STM32F446XE.ld)
 SET(CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS
     "${CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS} -Wl,--gc-sections -Wl,--wrap,main -Wl,-Map=${PROJECT_NAME}.map -mcpu=cortex-m0 -mthumb --specs=nano.specs -lstdc++ -lsupc++ -lm -lc -lgcc -lnosys -lstdc++ -lsupc++ -lm -lc -lgcc -lnosys")
 
@@ -147,9 +147,9 @@ file(GLOB MBED_SRC_SOURCES
           ${MBED_SRC_PATH}/common/*.c
           ${MBED_SRC_PATH}/common/*.cpp
           ${MBED_SRC_PATH}/targets/cmsis/TARGET_STM/TARGET_STM32F4/*.c
-          ${MBED_SRC_PATH}/targets/cmsis/TARGET_STM/TARGET_STM32F4/TARGET_NUCLEO_F411RE/*.c
+          ${MBED_SRC_PATH}/targets/cmsis/TARGET_STM/TARGET_STM32F4/TARGET_NUCLEO_F446RE/*.c
           ${MBED_SRC_PATH}/targets/hal/TARGET_STM/TARGET_STM32F4/*.c
-          ${MBED_SRC_PATH}/targets/hal/TARGET_STM/TARGET_STM32F4/TARGET_NUCLEO_F411RE/*.c
+          ${MBED_SRC_PATH}/targets/hal/TARGET_STM/TARGET_STM32F4/TARGET_NUCLEO_F446RE/*.c
     )
 add_sources(${MBED_SRC_SOURCES})
 
@@ -159,13 +159,14 @@ file(GLOB BLE_API_SOURCES
     )
 add_sources(${BLE_API_SOURCES})
 
-add_sources(${MBED_SRC_PATH}/targets/cmsis/TARGET_STM/TARGET_STM32F4/TARGET_NUCLEO_F411RE/TOOLCHAIN_GCC_ARM/startup_stm32f411xe.s)
+add_sources(${MBED_SRC_PATH}/targets/cmsis/TARGET_STM/TARGET_STM32F4/TARGET_NUCLEO_F446RE/TOOLCHAIN_GCC_ARM/startup_stm32f446xx.S)
 
 ############################################################################
 # By now, we've traversed all subdirectories and have collected everything that
 # needs to be built. We can define the build targets.
 ############################################################################
 # add MbedTest as a build target depending on all the sources
+message(${SRCS})
 add_executable(${MAIN_TARGET} ${SRCS})
 
 # Add a post-build dependency like printing size of the
